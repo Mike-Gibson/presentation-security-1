@@ -6,15 +6,22 @@ namespace Security1.Controllers
 {
     public class HomeController : Controller
     {
-        private static readonly List<string> Reviews;
+        private static readonly List<HomeModel.Review> Reviews = new List<HomeModel.Review>();
+
+        private static void ResetReviews()
+        {
+            Reviews.Clear();
+
+            Reviews.AddRange(new []
+            {
+                new HomeModel.Review("Bobby", "I really enjoyed this book"),
+                new HomeModel.Review("Jane", "A worthy addition to my book collection")
+            });
+        }
 
         static HomeController()
         {
-            Reviews = new List<string>
-            {
-                "I really enjoyed this book",
-                "A worthy addition to my book collection"
-            };
+            ResetReviews();
         }
 
         public ActionResult Index()
@@ -29,10 +36,19 @@ namespace Security1.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Index(string review)
+        public ActionResult Review(string review)
         {
             if (!string.IsNullOrEmpty(review))
-                Reviews.Insert(0, review);
+            {
+                var newReview = HomeModel.Review.AnonymousReview(review);
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    newReview.SetAuthor(User.Identity.Name);
+                }
+
+                Reviews.Insert(0, newReview);
+            }
 
             return RedirectToAction("Index");
         }
@@ -40,8 +56,9 @@ namespace Security1.Controllers
 
         public ActionResult Reset()
         {
-            Reviews.Clear();
-            return Content("ok");
+            ResetReviews();
+
+            return RedirectToAction("Index");
         }
     }
 }

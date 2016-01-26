@@ -5,15 +5,19 @@
 }
 
 <div class="jumbotron" style="padding: 20px">
+
+    <div style="border: 1px solid #676767; float: left; margin-right: 40px;">
+        <img src="~/images/book.jpg" />
+    </div>
+
     <h1>The Awesome Book</h1>
 
-    <div style="border: 1px solid #676767; float: left; margin-right: 20px;">
-        <img src="~/images/book.jpg"/>
-    </div>
+
 
     <p class="lead">This book is full of awesomeness.</p>
 
-    <p><a href="" class="btn btn-primary btn-lg">Add to Cart</a>
+    <p>
+        <a href="" class="btn btn-primary btn-lg">Add to Cart</a>
     </p>
 
     <div class="clearfix"></div>
@@ -28,22 +32,24 @@
             @foreach (var review in Model.Reviews)
             {
                 <div>
+                    <strong>@review.Author</strong>
+                    <br/>
                     @if (Request.QueryString.AllKeys.Contains("escape"))
                     {
-                        <p>@review</p>
+                        <p>@review.Text</p>
                     }
                     else
                     {
-                        <p>@Html.Raw(review)</p>
+                        <p>@Html.Raw(review.Text)</p>
                     }
                 </div>
-                <hr style="border-color: #454545"/>
+                <hr style="border-color: #454545" />
             }
         </div>
 
         <div class="well">
             <h3 style="margin-top:0">Add Review</h3>
-            @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+            @using (Html.BeginForm("Review", "Home", FormMethod.Post))
             {
                 <div class="form-group">
                     @Html.TextArea("review", new { @class = "form-control", rows = 4 })
