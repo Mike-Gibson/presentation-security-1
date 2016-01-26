@@ -13,7 +13,10 @@ In order to run the presentation:
     **NOTE:** You may need to edit the file `C:\Users\<username>\My Documents\IISExpress\config\applicationhost.config`:
     
     Replace the appropriate binding(s) with:   
-        <binding protocol="http" bindingInformation="*:62331:unnamed-bookstore.com" />
-        <binding protocol="http" bindingInformation="*:62331:win-lots-of-money.com" />
-
+    
+    ```
+    <binding protocol="http" bindingInformation="*:62331:unnamed-bookstore.com" />
+    <binding protocol="http" bindingInformation="*:62331:win-lots-of-money.com" />
+    ```
+    
 4. Open `presentation/index.html`
