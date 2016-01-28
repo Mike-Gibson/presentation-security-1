@@ -50,10 +50,16 @@
 			}
 			
 			.xml .javascript,
-			.javascript .xml {
+			.javascript .xml,
+            .xml .css, 
+            .css .xml {
 				opacity: 1;
 			}
 			
+            .reveal pre {
+                font-size: 1em;
+            }
+            
 			.reveal h1 {
 				margin-bottom: 60px;
 			}
@@ -94,8 +100,8 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Web Security</h1>
-					<h2 style="margin-left: -280px;">
+					<h1>Web Application Security</h1>
+					<h2 style="margin-left: -260px;">
 						<span class="sub-header">Part 1</span>
 						<span class="sub-header-separator"> | </span>
 						XSS and CSRF
@@ -134,7 +140,7 @@
 							<li class="fragment">
 								<span>Client XSS</span>
 								<br/>
-								<small>Data comes from JavaScript which has manipulated the page, e.g. XHR request</small>
+								<small>Data comes from JavaScript which has manipulated the page</small>
 							</li>
 						</ol>
 					</section>
@@ -158,22 +164,33 @@
 							Scripts
 						</h2>
 						
-						<pre><code class="hljs" data-trim contenteditable>
+						<pre class="fragment hide-after"><code class="hljs" data-trim contenteditable>
 <h1>
   I love this book
 </h1>
 						</code></pre>
 						
-						<pre class="fragment"><code class="hljs" data-trim contenteditable>
+						<pre class="fragment hide-after"><code class="hljs" data-trim contenteditable>
 <h1 style="font-size: 3em; color: red;">
   <marquee scrollamount="20">I REALLY love this book</marquee>
 </h1>
 						</code></pre>
 
-						<pre class="fragment"><code class="hljs" data-trim contenteditable>
+                        <pre class="fragment hide-after"><code class="hljs" data-trim contenteditable>
+<style>
+    div.navbar {
+        background-color: red;
+    }
+</style>
+
+Red navbar
+						</code></pre>
+
+						<pre class="fragment hide-after"><code class="hljs" data-trim contenteditable>
 &lt;script&gt;
   document.getElementsByTagName('img')[0].src =                     'http://s.quickmeme.com/img/b1/b136b23a3922791ba4cf862e11360f1c8ae3df0f09b8c9ccd57589dc089835d2.jpg';
 &lt;/script&gt;
+
 CATS!
 						</code></pre>
 						
@@ -184,13 +201,38 @@ CATS!
   console.log(cookies);
   alert('Found cookies: \r\n' + cookies + '\r\nNow I could post this value to some other server...');
 &lt;/script&gt;
+
 Yummy cookies
 						</code></pre>
 					</section>
 					
-					<section>
+                    <section>
 						<h2>
 							<span class="sub-header">1.4 </span>
+							<span class="sub-header-separator"> | </span>
+							Implications
+						</h2>
+						
+						<ul>
+							<li class="fragment">
+								Allows HTML to be rendered, overriding styles
+							</li>
+							<li class="fragment">
+								Website can be defaced
+							</li>
+							<li class="fragment">
+								Could leave website vulnerable to session hijacking
+							</li>
+                            <li class="fragment">
+								Exposes users of your site to browser/application exploits 
+							</li>
+						</ul>
+                        
+					</section>
+                    
+					<section>
+						<h2>
+							<span class="sub-header">1.5 </span>
 							<span class="sub-header-separator"> | </span>
 							Prevention
 						</h2>
@@ -254,7 +296,7 @@ Yummy cookies
 					
                     <section>
 						<h2>
-							<span class="sub-header">2.2 </span>
+							<span class="sub-header">2.1 </span>
 							<span class="sub-header-separator"> | </span>
 							Demo
 						</h2>
@@ -264,6 +306,35 @@ Yummy cookies
                                 <img src="custom/csrf email.jpg" style="border: 0"></img>
 							</a>
 						</p>
+					</section>
+                    
+                     <section>
+						<h2>
+							<span class="sub-header">2.2 </span>
+							<span class="sub-header-separator"> | </span>
+							A Closer Look
+						</h2>
+						
+                        <pre style="font-size: 0.6em" ><code class="hljs" data-trim>
+...
+<h1>Thanks for your click!</h1>
+<p>But unfortunately, you haven't actually won anything.</p>
+
+<form action="http://unnamed-bookstore.com:62331/Home/Review" 
+  method="POST">
+    <input type="hidden" name="review" 
+    
+    
+value="I THOUGHT I HAD WON THE JACKPOT, BUT I WAS WRONG! :(">
+</form>
+
+<script>
+    window.onload = function () {
+        document.forms[0].submit();
+    }
+</script>
+                        </code></pre>
+						
 					</section>
                     
                     <section>
